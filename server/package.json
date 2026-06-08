@@ -1,0 +1,16 @@
+{
+  "name": "saytica-eval-console-backend",
+  "version": "1.0.0",
+  "description": "Saytica Eval Console Backend",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "concurrently \"node index.js\" \"npm run dev --prefix ../client\""
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
