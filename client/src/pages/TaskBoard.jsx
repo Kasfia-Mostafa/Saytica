@@ -1,3 +1,21 @@
+/**
+ * ============================================================================
+ * TASK BOARD PAGE COMPONENT
+ * ============================================================================
+ * 
+ * Manages the workflow for AI data annotation tasks.
+ * Provides two distinct views toggled by the user's role:
+ * 
+ * 1. Annotator View: A Kanban-style board showing tasks assigned to a specific
+ *    user. Allows moving tasks between 'Pending', 'In Progress', and 'Done'.
+ *    Features optimistic UI updates for instant feedback.
+ * 
+ * 2. Client View: A high-level project summary dashboard displaying progress
+ *    rings, aggregated task counts, and a grid view of all tasks in a project.
+ * 
+ * Relies on the backend API for persistent state management.
+ */
+
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchTasks, updateTaskStatus } from '../utils/api';
 import TaskCard from '../components/TaskCard';

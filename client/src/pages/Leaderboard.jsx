@@ -1,3 +1,18 @@
+/**
+ * ============================================================================
+ * LEADERBOARD PAGE COMPONENT
+ * ============================================================================
+ * 
+ * Displays the AI Model Evaluation Leaderboard. 
+ * Features include:
+ * - Fetching evaluation data from the backend API.
+ * - Client-side sorting and filtering (by text search and provider).
+ * - Animated rendering of data using GSAP for staggered row entrances.
+ * - Interactive Bento-grid stat cards displaying derived metrics.
+ * 
+ * This component acts as the data-orchestrator for the ModelTable component.
+ */
+
 import React, { useState, useEffect, useRef } from 'react';
 import { fetchModels } from '../utils/api';
 import ModelTable from '../components/ModelTable';

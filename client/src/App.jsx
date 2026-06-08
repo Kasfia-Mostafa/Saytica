@@ -1,3 +1,19 @@
+/**
+ * ============================================================================
+ * SAYTICA EVAL CONSOLE - ROOT APPLICATION COMPONENT
+ * ============================================================================
+ * 
+ * This file serves as the main entry point for the React application.
+ * It is responsible for:
+ * 1. Rendering the living background environment (ParticleCanvas, CursorSpotlight, MorphBlobs).
+ * 2. Setting up the React Router context (BrowserRouter) for client-side routing.
+ * 3. Defining the main layout and mounting the Navbar.
+ * 4. Handling page transitions via the MainContent wrapper.
+ * 
+ * The background uses HTML5 Canvas and SVG animations to create a highly optimized,
+ * zero-dependency visual experience.
+ */
+
 import React, { useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';

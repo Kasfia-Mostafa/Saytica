@@ -1,3 +1,20 @@
+/**
+ * ============================================================================
+ * SAYTICA EVAL CONSOLE - BACKEND API SERVER
+ * ============================================================================
+ * 
+ * A lightweight Express server serving as the backend for the Saytica platform.
+ * 
+ * Architecture:
+ * - Uses local JSON files (models.json, tasks.json) as a pseudo-database.
+ * - Implements data sanitization on startup to guarantee type safety and 
+ *   prevent frontend crashes.
+ * - Provides RESTful endpoints for fetching models and managing tasks.
+ * 
+ * Note: For a production environment, this should be replaced with a robust 
+ * database solution (e.g., PostgreSQL or MongoDB).
+ */
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
