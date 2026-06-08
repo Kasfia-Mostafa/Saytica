@@ -1,53 +1,75 @@
 import React, { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
-import { FiBarChart2, FiClipboard } from 'react-icons/fi';
+import { FiBarChart2, FiClipboard, FiZap } from 'react-icons/fi';
 import gsap from 'gsap';
 
 const Navbar = () => {
   const navRef = useRef(null);
+  const logoRef = useRef(null);
 
   useEffect(() => {
+    // Navbar slide-in
     gsap.fromTo(
       navRef.current,
-      { y: -50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }
+      { y: -60, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }
     );
+    // Logo pulse
+    gsap.to(logoRef.current, {
+      boxShadow: '0 0 30px rgba(0,212,255,0.5)',
+      repeat: -1,
+      yoyo: true,
+      duration: 2,
+      ease: 'sine.inOut',
+    });
   }, []);
 
   return (
-    <nav className="bg-white border-b border-gray sticky top-0 z-50 shadow-sm" ref={navRef}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center h-16">
-        <div className="font-bold text-xl -tracking-wide text-black">
-          <span>Saytica Eval</span>
+    <nav className="nav-aurora sticky top-0 z-50" ref={navRef}>
+      <div className="main-layout" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
+
+        {/* Brand */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="logo-mark" ref={logoRef} />
+          <div>
+            <div className="nav-brand holo-text">SAYTICA</div>
+            <div style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.58rem',
+              letterSpacing: '0.2em',
+              color: 'var(--color-text-muted)',
+              textTransform: 'uppercase',
+              lineHeight: 1,
+              marginTop: '1px',
+            }}>
+              Eval Console
+            </div>
+          </div>
         </div>
-        <div className="flex gap-4">
-          <NavLink 
-            to="/" 
-            className={({ isActive }) =>
-              `flex items-center gap-2 px-4 py-2 rounded-sm font-medium text-black transition-all ${
-                isActive 
-                  ? 'opacity-100 text-accent bg-accent/8' 
-                  : 'opacity-70 hover:opacity-100 hover:bg-light'
-              }`
-            }
+
+
+
+        {/* Nav links */}
+        <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+          <NavLink
+            to="/"
+            id="nav-leaderboard"
+            className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
           >
-            <FiBarChart2 className="text-lg" />
+            <FiBarChart2 size={15} />
             <span>Leaderboard</span>
           </NavLink>
-          <NavLink 
-            to="/tasks" 
-            className={({ isActive }) =>
-              `flex items-center gap-2 px-4 py-2 rounded-sm font-medium text-black transition-all ${
-                isActive 
-                  ? 'opacity-100 text-accent bg-accent/8' 
-                  : 'opacity-70 hover:opacity-100 hover:bg-light'
-              }`
-            }
+
+          <NavLink
+            to="/tasks"
+            id="nav-tasks"
+            className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}
           >
-            <FiClipboard className="text-lg" />
+            <FiClipboard size={15} />
             <span>Task Board</span>
           </NavLink>
         </div>
+
       </div>
     </nav>
   );

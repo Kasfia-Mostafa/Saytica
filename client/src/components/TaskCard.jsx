@@ -1,68 +1,84 @@
 import React, { useRef } from 'react';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiCheck } from 'react-icons/fi';
 import gsap from 'gsap';
+
+const STATUS_CONFIG = {
+  pending:     { label: 'Pending',     dotClass: 'status-dot pending',     color: '#475569' },
+  in_progress: { label: 'In Progress', dotClass: 'status-dot in_progress', color: '#f59e0b' },
+  done:        { label: 'Done',        dotClass: 'status-dot done',        color: '#10b981' },
+};
 
 const TaskCard = ({ task, isClientView, onAdvance }) => {
   const cardRef = useRef(null);
 
   const handleAdvance = () => {
-    if (!onAdvance || isClientView) return;
-    
+    if (!onAdvance || isClientView || task.status === 'done') return;
     const nextStatus = task.status === 'pending' ? 'in_progress' : 'done';
-    
-    // Animate out, then call parent
     gsap.to(cardRef.current, {
-      x: 30,
+      x: 24,
       opacity: 0,
-      duration: 0.3,
+      scale: 0.97,
+      duration: 0.28,
+      ease: 'power2.in',
       onComplete: () => {
         onAdvance(task.id, nextStatus);
-        // Parent will re-render in new column, reset inline styles
-        gsap.set(cardRef.current, { x: 0, opacity: 1 });
-      }
+        gsap.set(cardRef.current, { x: 0, opacity: 1, scale: 1 });
+      },
     });
   };
 
-  const getStatusColor = (status) => {
-    switch(status) {
-      case 'done': return '#10b981'; // Green
-      case 'in_progress': return '#f59e0b'; // Yellow/Orange
-      default: return '#6b7280'; // Gray (pending)
-    }
-  };
+  const sc = STATUS_CONFIG[task.status] || STATUS_CONFIG.pending;
 
   return (
-    <div
-      className="bg-white border border-gray rounded-md p-4 mb-3 shadow-sm transition-all duration-200 flex flex-col gap-3 hover:-translate-y-0.5 hover:shadow-md"
-      ref={cardRef}
-    >
-      <div className="flex justify-between items-center">
-        <span className="text-xs font-semibold uppercase tracking-widest bg-light px-2 py-0.5 rounded text-gray-500">
-          {task.projectName}
-        </span>
-        <div 
-          className="w-2.5 h-2.5 rounded-full" 
-          style={{ backgroundColor: getStatusColor(task.status) }}
-          title={task.status.replace('_', ' ')}
-        />
+    <div className="task-card" ref={cardRef}>
+      {/* Top row: project tag + status dot */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span className="task-project-tag">{task.projectName}</span>
+        <span className={sc.dotClass} title={sc.label} />
       </div>
-      
-      <h4 className="text-base font-medium leading-relaxed text-black">{task.title}</h4>
-      
+
+      {/* Title */}
+      <p className="task-title">{task.title}</p>
+
+      {/* Client view: assigned to */}
       {isClientView && (
-        <div className="text-sm text-gray-500 bg-[#fafafa] p-1.5 rounded-sm mt-auto">
-          Assigned to: <strong>{task.assignedTo || 'Unassigned'}</strong>
+        <div style={{
+          fontSize: '0.72rem',
+          fontFamily: 'var(--font-mono)',
+          color: 'var(--color-text-muted)',
+          padding: '6px 10px',
+          borderRadius: '6px',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.06)',
+        }}>
+          Assigned →{' '}
+          <span style={{ color: 'var(--color-text-secondary)', fontWeight: 500 }}>
+            {task.assignedTo || 'Unassigned'}
+          </span>
         </div>
       )}
 
+      {/* Advance button */}
       {!isClientView && task.status !== 'done' && (
         <button
-          className="mt-auto self-start flex items-center gap-2 text-sm font-semibold text-accent px-3 py-1.5 rounded-sm bg-accent/8 transition-colors hover:bg-accent/15"
+          id={`advance-${task.id}`}
+          className="advance-btn"
           onClick={handleAdvance}
         >
-          <span>Advance</span>
-          <FiArrowRight />
+          {task.status === 'pending' ? 'Start' : 'Complete'}
+          <FiArrowRight size={12} />
         </button>
+      )}
+
+      {/* Done indicator */}
+      {task.status === 'done' && !isClientView && (
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: '5px',
+          fontSize: '0.72rem', fontFamily: 'var(--font-mono)',
+          color: '#10b981', fontWeight: 600, letterSpacing: '0.06em',
+        }}>
+          <FiCheck size={11} /> COMPLETE
+        </div>
       )}
     </div>
   );
