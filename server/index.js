@@ -52,7 +52,12 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Saytica API server running on http://localhost:${PORT}`);
-});
+// Only start the server locally if not running on Vercel
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Saytica API server running on http://localhost:${PORT}`);
+  });
+}
+
+// Export the app for Vercel Serverless
+module.exports = app;
